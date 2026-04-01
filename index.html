@@ -25,8 +25,10 @@ body {
     padding: 25px;
     border-radius: 20px;
     text-align: center;
-    width: 320px;
-    animation: fade 1s ease;
+    width: 90%;
+    max-width: 320px;
+    word-wrap: break-word;
+    animation: fade 0.8s ease;
 }
 
 input, button {
@@ -48,24 +50,29 @@ button:hover { transform: scale(1.05); }
 
 .hidden { display:none; }
 
-@keyframes fade {
-    from {opacity:0; transform: translateY(20px);}
-    to {opacity:1;}
+h1, h2, p {
+    word-break: break-word;
 }
 
-/* typing */
+h1 {
+    font-size: clamp(22px, 5vw, 28px);
+}
+h2 {
+    font-size: clamp(18px, 4.5vw, 22px);
+}
+
+/* typing (FIXED) */
 .typing {
     border-right: 2px solid white;
-    white-space: nowrap;
-    overflow: hidden;
-    animation: typing 2s steps(30), blink .5s infinite;
+    white-space: normal;
+    display: inline-block;
+    animation: blink .6s infinite;
 }
-@keyframes typing { from {width:0} to {width:100%} }
 @keyframes blink { 50% {border-color:transparent} }
 
 /* cake */
 .cake {
-    font-size: 100px;
+    font-size: 90px;
     animation: pop .6s ease;
 }
 @keyframes pop {
@@ -88,13 +95,12 @@ button:hover { transform: scale(1.05); }
 
 <body>
 
-<!-- music -->
 <audio id="bgm" loop>
 <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3">
 </audio>
 
 <div class="card" id="step1">
-    <h2 class="typing">Hey 👀 I need your name… for something slightly dangerous 😌</h2>
+    <h2>Hey 👀 I need your name… for something slightly dangerous 😌</h2>
     <input type="text" id="name" placeholder="Your name">
     <input type="date" id="bday">
     <button onclick="start()">Continue 👀</button>
@@ -142,7 +148,7 @@ function start(){
             result.innerHTML += `
             <p>I didn’t come empty handed 😌</p>
             <button onclick="cake()">Open Gift 🎁</button>`;
-        },2000);
+        },1500);
     }
 
     // 😢 PAST
@@ -161,7 +167,7 @@ function start(){
             result.innerHTML += `
             <p>But I still got you something… don’t be mad 😏</p>
             <button onclick="cake()">Take it 🎁</button>`;
-        },2000);
+        },1500);
     }
 
     // ⏳ FUTURE
@@ -190,12 +196,12 @@ function start(){
     }
 }
 
-// typing
+// cleaner typing
 function typeText(el, text){
     el.innerHTML = `<h2 class="typing">${text}</h2>`;
 }
 
-// 🎂 FINAL CAKE
+// 🎂 FINAL
 function cake(){
     document.body.innerHTML = `
     <div class="card">
