@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Something Just For You 😌</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #1f1f1f, #000);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Card */
+.card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 320px;
+    word-wrap: break-word;
+    animation: fade 0.8s ease;
+}
+
+input, button {
+    width: 90%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+}
+
+button {
+    background: linear-gradient(45deg, #ff4d6d, #ff758f);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover { transform: scale(1.05); }
+
+.hidden { display:none; }
+
+h1, h2, p {
+    word-break: break-word;
+}
+
+h1 {
+    font-size: clamp(22px, 5vw, 28px);
+}
+h2 {
+    font-size: clamp(18px, 4.5vw, 22px);
+}
+
+/* typing (FIXED) */
+.typing {
+    border-right: 2px solid white;
+    white-space: normal;
+    display: inline-block;
+    animation: blink .6s infinite;
+}
+@keyframes blink { 50% {border-color:transparent} }
+
+/* cake */
+.cake {
+    font-size: 90px;
+    animation: pop .6s ease;
+}
+@keyframes pop {
+    0% {transform: scale(0);}
+    100% {transform: scale(1);}
+}
+
+/* sparkles */
+.sparkle {
+    position: absolute;
+    animation: float 4s infinite;
+}
+@keyframes float {
+    0%{transform: translateY(0)}
+    50%{transform: translateY(-30px)}
+    100%{transform: translateY(0)}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3">
+</audio>
+
+<div class="card" id="step1">
+    <h2>Hey 👀 I need your name… for something slightly dangerous 😌</h2>
+    <input type="text" id="name" placeholder="Your name">
+    <input type="date" id="bday">
+    <button onclick="start()">Continue 👀</button>
+</div>
+
+<div class="card hidden" id="result"></div>
+
+<script>
+
+function start(){
+    let name = document.getElementById("name").value;
+    let bday = document.getElementById("bday").value;
+
+    if(!name || !bday){
+        alert("Fill properly 😒");
+        return;
+    }
+
+    document.getElementById("bgm").play().catch(()=>{});
+
+    let today = new Date();
+    let bd = new Date(bday);
+
+    let tm=today.getMonth(), td=today.getDate();
+    let bm=bd.getMonth(), bdD=bd.getDate();
+
+    let result = document.getElementById("result");
+
+    document.getElementById("step1").classList.add("hidden");
+    result.classList.remove("hidden");
+
+    // 🎉 TODAY
+    if(tm===bm && td===bdD){
+
+        let wishes = [
+            `Happy Birthday ${name} 🎉`,
+            `${name}… you just leveled up 😏`,
+            `Breaking news: it's ${name}'s day 👀`,
+            `${name}, today you're the main character 😌`
+        ];
+
+        typeText(result, wishes[Math.floor(Math.random()*wishes.length)]);
+
+        setTimeout(()=>{
+            result.innerHTML += `
+            <p>I didn’t come empty handed 😌</p>
+            <button onclick="cake()">Open Gift 🎁</button>`;
+        },1500);
+    }
+
+    // 😢 PAST
+    else if(tm>bm || (tm===bm && td>bdD)){
+
+        let sadLines = [
+            `Okay… I might be a little late ${name} 😅`,
+            `I missed it… don’t judge me ${name} 😔`,
+            `${name}… timing wasn’t on my side 😭`,
+            `Listen… I’m late but I came with effort 😌`
+        ];
+
+        typeText(result, sadLines[Math.floor(Math.random()*sadLines.length)]);
+
+        setTimeout(()=>{
+            result.innerHTML += `
+            <p>But I still got you something… don’t be mad 😏</p>
+            <button onclick="cake()">Take it 🎁</button>`;
+        },1500);
+    }
+
+    // ⏳ FUTURE
+    else{
+
+        let next = new Date(today.getFullYear(), bm, bdD);
+
+        result.innerHTML = `
+        <h2>Hey ${name} 👀</h2>
+        <p>Something is coming… and I’m lowkey excited 😌</p>
+        <div id="timer"></div>
+        `;
+
+        setInterval(()=>{
+            let now=new Date();
+            let diff=next-now;
+
+            let d=Math.floor(diff/(1000*60*60*24));
+            let h=Math.floor((diff/(1000*60*60))%24);
+            let m=Math.floor((diff/(1000*60))%60);
+            let s=Math.floor((diff/1000)%60);
+
+            document.getElementById("timer").innerHTML =
+            `<h1>${d}d ${h}h ${m}m ${s}s 🎉</h1>`;
+        },1000);
+    }
+}
+
+// cleaner typing
+function typeText(el, text){
+    el.innerHTML = `<h2 class="typing">${text}</h2>`;
+}
+
+// 🎂 FINAL
+function cake(){
+    document.body.innerHTML = `
+    <div class="card">
+        <h1>Okay… here 😌</h1>
+        <div class="cake">🎂</div>
+        <p>I know it's just a small thing… but I thought of you 👀</p>
+        <p style="opacity:0.7;">– Maneesha 😏</p>
+        <p style="font-size:12px; opacity:0.5;">Don’t tell anyone I did this 😶‍🌫️</p>
+    </div>`;
+
+    for(let i=0;i<20;i++){
+        let s=document.createElement("div");
+        s.className="sparkle";
+        s.innerHTML="✨";
+        s.style.top=Math.random()*100+"%";
+        s.style.left=Math.random()*100+"%";
+        document.body.appendChild(s);
+    }
+}
+
+</script>
+
+</body>
+</html>
